@@ -115,7 +115,7 @@
             style="display: none"
           >
             <label class="col-md-4 control-label" for="Amount">Amount %</label>
-            <div class="col-md-4">
+            <div class="col-md-4 input-group amount-group">
               <input
                 id="Amount"
                 name="Amount"
@@ -124,6 +124,56 @@
                 class="form-control input-md"
                 required=""
               />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-secondary"
+                  type="button"
+                  id="amountButton5"
+                  value="5"
+                >
+                  5%
+                </button>
+                <button
+                  class="btn btn-secondary"
+                  type="button"
+                  id="amountButton10"
+                  value="10"
+                >
+                  10%
+                </button>
+                <button
+                  class="btn btn-secondary"
+                  type="button"
+                  id="amountButton15"
+                  value="15"
+                >
+                  15%
+                </button>
+                <button
+                  class="btn btn-secondary"
+                  type="button"
+                  id="amountButton25"
+                  value="25"
+                >
+                  25%
+                </button>
+                <button
+                  class="btn btn-secondary"
+                  type="button"
+                  id="amountButton50"
+                  value="50"
+                >
+                  50%
+                </button>
+                <button
+                  class="btn btn-secondary"
+                  type="button"
+                  id="amountButton100"
+                  value="100"
+                >
+                  100%
+                </button>
+              </div>
             </div>
           </div>
 
@@ -159,18 +209,24 @@
             </div>
           </div>
           <div class="form-group ladder-field" style="display: none">
-            <label class="col-md-4 control-label" for="OrderNo">Orders #</label>
+            <label class="col-md-4 control-label" for="OrdersNo">
+              Orders #
+            </label>
             <div class="col-md-4">
-              <input
-                id="OrderNo"
-                name="OrderNo"
-                type="number"
-                placeholder="OrderNo"
-                class="form-control input-md"
-                required=""
-              />
+              <select id="OrdersNo" name="OrdersNo" class="form-control">
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
             </div>
           </div>
+
           <button id="submit" name="submit" class="btn btn-primary">
             submit
           </button>
@@ -217,6 +273,15 @@
           );
           selectedOrderType = selectedOrderType.toLowerCase();
           console.log(selectedOrderType);
+          if ($("#Amount").val() == "") {
+            alert("Please enter amount %");
+            return false;
+          }
+          if ($("#Amount").val() < 0 || $("#Amount").val() > 100) {
+            alert("Please enter amount % between 0 to 100");
+            return false;
+          }
+
           if (selectedOrderType == "market") {
             data_to_send = {
               order_type: selectedOrderType,
@@ -254,6 +319,11 @@
           console.log(data_to_send);
           // This function will be executed when the Submit button is clicked
           alert("Submit button clicked!"); // You can replace this with your desired action
+        });
+
+        $(".amount-group button").click(function () {
+          var buttonValue = parseInt($(this).val()); // Get the button value (e.g., 5, 10, 15, ...)
+          $("#Amount").val(buttonValue);
         });
       });
     </script>
