@@ -69,8 +69,8 @@
             </label>
             <div class="col-md-4">
               <select id="assetselect" name="assetselect" class="form-control">
-                <option value="1">BTC/USDT</option>
-                <option value="2">ETH/USDT</option>
+                <option value="BTC/USDT">BTC/USDT</option>
+                <option value="ETH/USDT">ETH/USDT</option>
               </select>
             </div>
           </div>
@@ -88,8 +88,8 @@
                 name="longshortselect"
                 class="form-control"
               >
-                <option value="1">BUY</option>
-                <option value="2">SELL</option>
+                <option value="BUY">BUY</option>
+                <option value="SELL">SELL</option>
               </select>
             </div>
           </div>
@@ -171,6 +171,9 @@
               />
             </div>
           </div>
+          <button id="submit" name="submit" class="btn btn-primary">
+            submit
+          </button>
         </fieldset>
       </form>
     </div>
@@ -195,14 +198,63 @@
 
         // Initialize with MARKET selected
         $("#marketTypeMarket").trigger("click");
-      });
+        const mainButton = window.Telegram.WebApp.MainButton;
+        mainButton.text = "Save Preferences";
+        mainButton.enable();
+        mainButton.show();
+        mainButton.onClick(function () {
+          data_to_send = processDataToSend();
+          console.log(data_to_send);
+          if (data_to_send) {
+            window.Telegram.WebApp.sendData(JSON.stringify(data_to_send));
+          }
+        });
 
-      const mainButton = window.Telegram.WebApp.MainButton;
-      mainButton.text = "Save Preferences";
-      mainButton.enable();
-      mainButton.show();
-      mainButton.onClick(function () {
-        window.Telegram.WebApp.sendData(JSON.stringify({ lll: "hhh" }));
+        function processDataToSend() {
+          var data_to_send = {};
+          var selectedOrderType = $(".custom-radio-button.active").data(
+            "market-type"
+          );
+          selectedOrderType = selectedOrderType.toLowerCase();
+          console.log(selectedOrderType);
+          if (selectedOrderType == "market") {
+            data_to_send = {
+              order_type: selectedOrderType,
+              asset: $("#assetselect").val(),
+              longshort: $("#longshortselect").val(),
+              amount: $("#Amount").val(),
+            };
+          } else if (selectedOrderType == "limit") {
+            data_to_send = {
+              order_type: selectedOrderType,
+              asset: $("#assetselect").val(),
+              longshort: $("#longshortselect").val(),
+              amount: $("#Amount").val(),
+              limit_price: $("#LimitPrice").val(),
+            };
+          } else if (selectedOrderType == "ladder") {
+            data_to_send = {
+              order_type: selectedOrderType,
+              asset: $("#assetselect").val(),
+              longshort: $("#longshortselect").val(),
+              amount: $("#Amount").val(),
+              start_price: $("#StartPrice").val(),
+              end_price: $("#EndPrice").val(),
+              order_no: $("#OrderNo").val(),
+            };
+          } else {
+            alert("Please select order type");
+          }
+          return data_to_send;
+        }
+
+        $("#submit").click(function (e) {
+          e.preventDefault();
+          data_to_send = processDataToSend();
+          console.log(data_to_send);
+          // This function will be executed when the Submit button is clicked
+          alert("Submit button clicked!"); // You can replace this with your desired action
+        });
       });
     </script>
   </body>
