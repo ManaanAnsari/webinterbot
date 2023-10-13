@@ -298,6 +298,24 @@
               limit_price: $("#LimitPrice").val(),
             };
           } else if (selectedOrderType == "ladder") {
+            if ($("#OrderNo").val() == "") {
+              alert("Please enter order no");
+              return false;
+            }
+            if ($("#StartPrice").val() == "") {
+              alert("Please enter start price");
+              return false;
+            }
+            if ($("#EndPrice").val() == "") {
+              alert("Please enter end price");
+              return false;
+            }
+
+            if ($("#OrderNo").val() < 0 || $("#OrderNo").val() > 10) {
+              alert("Please enter order no between 0 to 10");
+              return false;
+            }
+
             data_to_send = {
               order_type: selectedOrderType,
               asset: $("#assetselect").val(),
