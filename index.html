@@ -10,6 +10,19 @@
     <!-- Load the Telegram Library -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      /* Add custom styles for radio buttons */
+      .custom-radio-button {
+        display: inline-block;
+        background-color: #ccc;
+        padding: 10px 20px;
+        cursor: pointer;
+      }
+      .custom-radio-button.active {
+        background-color: #007bff;
+        color: #fff;
+      }
+    </style>
   </head>
   <body ng-controller="CustomUIController">
     <div class="container px-5 my-5">
@@ -18,11 +31,42 @@
           <!-- Form Name -->
           <legend>Create order</legend>
 
-          <!-- Select Basic -->
+          <!-- Custom Radio Buttons for Market Type -->
           <div class="form-group">
-            <label class="col-md-4 control-label" for="selectbasic"
-              >Asset</label
-            >
+            <label class="col-md-4 control-label">Order Type</label>
+            <div class="col-md-8">
+              <div
+                class="custom-radio-button"
+                id="marketTypeMarket"
+                data-market-type="MARKET"
+              >
+                MARKET
+              </div>
+              <div
+                class="custom-radio-button"
+                id="marketTypeLimit"
+                data-market-type="LIMIT"
+              >
+                LIMIT
+              </div>
+              <div
+                class="custom-radio-button"
+                id="marketTypeLadder"
+                data-market-type="Ladder"
+              >
+                Ladder
+              </div>
+            </div>
+          </div>
+
+          <!-- Select Basic for MARKET -->
+          <div
+            class="form-group market-field limit-field ladder-field"
+            style="display: none"
+          >
+            <label class="col-md-4 control-label" for="selectbasic">
+              Asset
+            </label>
             <div class="col-md-4">
               <select id="selectbasic" name="selectbasic" class="form-control">
                 <option value="1">BTC/USDT</option>
@@ -31,28 +75,46 @@
             </div>
           </div>
 
-          <!-- Select Basic -->
-          <div class="form-group">
-            <label class="col-md-4 control-label" for="longshort"
-              >Long/Short</label
-            >
+          <!-- Select Basic for LIMIT -->
+          <div class="form-group market-field" style="display: none">
+            <label class="col-md-4 control-label" for="selectlimit">
+              Limit Asset
+            </label>
             <div class="col-md-4">
-              <select id="longshort" name="longshort" class="form-control">
-                <option value="1">BUY</option>
-                <option value="2">SELL</option>
+              <select id="selectlimit" name="selectlimit" class="form-control">
+                <option value="1">BTC/USDT</option>
+                <option value="2">ETH/USDT</option>
               </select>
             </div>
           </div>
 
-          <!-- Text input-->
-          <div class="form-group">
-            <label class="col-md-4 control-label" for="amount">Amount</label>
+          <!-- Text input for Ladder -->
+          <div class="form-group market-field" style="display: none">
+            <label class="col-md-4 control-label" for="ladderAmount"
+              >Ladder Amount</label
+            >
             <div class="col-md-4">
               <input
-                id="amount"
-                name="amount"
+                id="ladderAmount"
+                name="ladderAmount"
                 type="text"
-                placeholder="Amount"
+                placeholder="Ladder Amount"
+                class="form-control input-md"
+                required=""
+              />
+            </div>
+          </div>
+
+          <div class="form-group ladder-field" style="display: none">
+            <label class="col-md-4 control-label" for="ladderAmount"
+              >Ladder lllllll</label
+            >
+            <div class="col-md-4">
+              <input
+                id="ladderAmount"
+                name="ladderAmount"
+                type="text"
+                placeholder="Ladder Amount"
                 class="form-control input-md"
                 required=""
               />
@@ -61,14 +123,29 @@
         </fieldset>
       </form>
     </div>
-  </body>
-  <script>
-    $(document).ready(function () {
-      // Wait for the document to be fully loaded
-      $("#submit").click(function () {
-        // This function will be executed when the Submit button is clicked
-        alert("Submit button clicked!"); // You can replace this with your desired action
+    <script>
+      $(document).ready(function () {
+        // Wait for the document to be fully loaded
+
+        // Handle custom radio button clicks
+        $(".custom-radio-button").click(function () {
+          $(".custom-radio-button").removeClass("active");
+          $(this).addClass("active");
+
+          // Get the selected market type
+          var selectedMarketType = $(this).data("market-type");
+
+          // Show/hide the corresponding form fields
+          $(".market-field").hide();
+          $(".limit-field").hide();
+          $(".ladder-field").hide();
+          $("." + selectedMarketType.toLowerCase() + "-field").show();
+        });
+
+        // Initialize with MARKET selected
+        $("#marketTypeMarket").trigger("click");
       });
+
       const mainButton = window.Telegram.WebApp.MainButton;
       mainButton.text = "Save Preferences";
       mainButton.enable();
@@ -76,6 +153,6 @@
       mainButton.onClick(function () {
         window.Telegram.WebApp.sendData(JSON.stringify({ lll: "hhh" }));
       });
-    });
-  </script>
+    </script>
+  </body>
 </html>
