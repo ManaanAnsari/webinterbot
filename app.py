@@ -16,6 +16,7 @@ async def launch_web_ui(update: Update, callback: CallbackContext):
 async def web_app_data(update: Update, context: CallbackContext):
     data = json.loads(update.message.web_app_data.data)
     await update.message.reply_text("Your data was:")
+    print(data)
     for k,v in data.items():
         await update.message.reply_text(f"{k}: {v}")
 
