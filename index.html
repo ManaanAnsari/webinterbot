@@ -68,37 +68,59 @@
               Asset
             </label>
             <div class="col-md-4">
-              <select id="selectbasic" name="selectbasic" class="form-control">
+              <select id="assetselect" name="assetselect" class="form-control">
                 <option value="1">BTC/USDT</option>
                 <option value="2">ETH/USDT</option>
               </select>
             </div>
           </div>
 
-          <!-- Select Basic for LIMIT -->
-          <div class="form-group market-field" style="display: none">
+          <div
+            class="form-group market-field limit-field ladder-field"
+            style="display: none"
+          >
             <label class="col-md-4 control-label" for="selectlimit">
-              Limit Asset
+              Long/Short
             </label>
             <div class="col-md-4">
-              <select id="selectlimit" name="selectlimit" class="form-control">
-                <option value="1">BTC/USDT</option>
-                <option value="2">ETH/USDT</option>
+              <select
+                id="longshortselect"
+                name="longshortselect"
+                class="form-control"
+              >
+                <option value="1">BUY</option>
+                <option value="2">SELL</option>
               </select>
             </div>
           </div>
 
-          <!-- Text input for Ladder -->
-          <div class="form-group market-field" style="display: none">
-            <label class="col-md-4 control-label" for="ladderAmount"
-              >Ladder Amount</label
+          <div class="form-group limit-field" style="display: none">
+            <label class="col-md-4 control-label" for="LimitPrice"
+              >At Price</label
             >
             <div class="col-md-4">
               <input
-                id="ladderAmount"
-                name="ladderAmount"
-                type="text"
-                placeholder="Ladder Amount"
+                id="LimitPrice"
+                name="LimitPrice"
+                type="number"
+                placeholder="at Price"
+                class="form-control input-md"
+                required=""
+              />
+            </div>
+          </div>
+
+          <div
+            class="form-group market-field limit-field ladder-field"
+            style="display: none"
+          >
+            <label class="col-md-4 control-label" for="Amount">Amount</label>
+            <div class="col-md-4">
+              <input
+                id="Amount"
+                name="Amount"
+                type="number"
+                placeholder="Amount"
                 class="form-control input-md"
                 required=""
               />
@@ -106,15 +128,44 @@
           </div>
 
           <div class="form-group ladder-field" style="display: none">
-            <label class="col-md-4 control-label" for="ladderAmount"
-              >Ladder lllllll</label
+            <label class="col-md-4 control-label" for="StartPrice"
+              >Start Price</label
             >
             <div class="col-md-4">
               <input
-                id="ladderAmount"
-                name="ladderAmount"
-                type="text"
-                placeholder="Ladder Amount"
+                id="StartPrice"
+                name="StartPrice"
+                type="number"
+                placeholder="StartPrice"
+                class="form-control input-md"
+                required=""
+              />
+            </div>
+          </div>
+
+          <div class="form-group ladder-field" style="display: none">
+            <label class="col-md-4 control-label" for="EndPrice"
+              >End Price</label
+            >
+            <div class="col-md-4">
+              <input
+                id="EndPrice"
+                name="EndPrice"
+                type="number"
+                placeholder="EndPrice"
+                class="form-control input-md"
+                required=""
+              />
+            </div>
+          </div>
+          <div class="form-group ladder-field" style="display: none">
+            <label class="col-md-4 control-label" for="OrderNo">Orders #</label>
+            <div class="col-md-4">
+              <input
+                id="OrderNo"
+                name="OrderNo"
+                type="number"
+                placeholder="OrderNo"
                 class="form-control input-md"
                 required=""
               />
