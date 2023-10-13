@@ -12,11 +12,14 @@ async def launch_web_ui(update: Update, callback: CallbackContext):
     ]
     await update.message.reply_text("Let's do this...", reply_markup=ReplyKeyboardMarkup(kb))
 
+
 async def web_app_data(update: Update, context: CallbackContext):
     data = json.loads(update.message.web_app_data.data)
     await update.message.reply_text("Your data was:")
-    for result in data:
-        await update.message.reply_text(f"{result['name']}: {result['value']}")
+    for k,v in data.items():
+        await update.message.reply_text(f"{k}: {v}")
+
+
 
 if __name__ == '__main__':
     # when we run the script we want to first create the bot from the token:
