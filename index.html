@@ -317,6 +317,10 @@
               leverage: $("#leverageselect").val(),
             };
           } else if (selectedOrderType == "limit") {
+            if ($("#LimitPrice").val() == "") {
+              alert("Please enter limit price");
+              return false;
+            }
             data_to_send = {
               order_type: selectedOrderType,
               asset: $("#assetselect").val(),
