@@ -94,6 +94,32 @@
             </div>
           </div>
 
+          <div
+            class="form-group market-field limit-field ladder-field"
+            style="display: none"
+          >
+            <label class="col-md-4 control-label" for="selectleverage">
+              Leverage
+            </label>
+            <div class="col-md-4">
+              <select
+                id="leverageselect"
+                name="leverageselect"
+                class="form-control"
+              >
+                <option value="1" selected>1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+              </select>
+            </div>
+          </div>
+
           <div class="form-group limit-field" style="display: none">
             <label class="col-md-4 control-label" for="LimitPrice"
               >At Price</label
@@ -288,6 +314,7 @@
               asset: $("#assetselect").val(),
               longshort: $("#longshortselect").val(),
               amount: $("#Amount").val(),
+              leverage: $("#leverageselect").val(),
             };
           } else if (selectedOrderType == "limit") {
             data_to_send = {
@@ -296,6 +323,7 @@
               longshort: $("#longshortselect").val(),
               amount: $("#Amount").val(),
               limit_price: $("#LimitPrice").val(),
+              leverage: $("#leverageselect").val(),
             };
           } else if (selectedOrderType == "ladder") {
             if ($("#OrderNo").val() == "") {
@@ -324,6 +352,7 @@
               start_price: $("#StartPrice").val(),
               end_price: $("#EndPrice").val(),
               order_no: $("#OrderNo").val(),
+              leverage: $("#leverageselect").val(),
             };
           } else {
             alert("Please select order type");
