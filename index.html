@@ -225,9 +225,9 @@
         const high = params.get("h");
         const low = params.get("l");
         const close = params.get("c");
-        const assets = params.get("assets").split(",");
-        const exchanges = params.get("exs").split(",");
-        console.log(balance, close, asset, assets, exchanges);
+        const assets = params.get("assets")?.split(",");
+        const exchanges = params.get("exs")?.split(",");
+        console.log(balance, close, assets, exchanges);
 
         // Handle custom radio button clicks
         $(".custom-radio-button").click(function () {
