@@ -215,6 +215,19 @@
     <script>
       $(document).ready(function () {
         // Wait for the document to be fully loaded
+        const url = new URL(window.location.href);
+        // Create a URLSearchParams object from the URL search parameters
+        const params = new URLSearchParams(url.search);
+
+        // Get individual parameter values
+        const balance = params.get("b");
+        const open = params.get("o");
+        const high = params.get("h");
+        const low = params.get("l");
+        const close = params.get("c");
+        const assets = params.get("assets").split(",");
+        const exchanges = params.get("exs").split(",");
+        console.log(balance, close, asset, assets, exchanges);
 
         // Handle custom radio button clicks
         $(".custom-radio-button").click(function () {
