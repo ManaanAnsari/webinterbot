@@ -30,6 +30,10 @@
         <fieldset>
           <!-- Form Name -->
           <legend>Create order</legend>
+          <div class="col-md-8">
+            <div>Balance $:<span id="Balance"></span></div>
+            <div>OHLC:<span id="OHLC"></span></div>
+          </div>
 
           <!-- Custom Radio Buttons for Market Type -->
           <div class="form-group">
@@ -68,10 +72,11 @@
               Asset
             </label>
             <div class="col-md-4">
-              <select id="assetselect" name="assetselect" class="form-control">
-                <option value="BTC/USDT">BTC/USDT</option>
-                <option value="ETH/USDT">ETH/USDT</option>
-              </select>
+              <select
+                id="assetselect"
+                name="assetselect"
+                class="form-control"
+              ></select>
             </div>
           </div>
 
@@ -227,8 +232,23 @@
         const close = params.get("c");
         const assets = params.get("assets")?.split(",");
         const exchanges = params.get("exs")?.split(",");
-        console.log(balance, close, assets, exchanges);
+        console.log(balance, open, high, low, close, assets, exchanges);
 
+        const assetSelect = $("#assetselect");
+        if (assets) {
+          for (let i = 0; i < assets.length; i++) {
+            assetSelect.append(
+              `<option value="${assets[i]}">${assets[i]}</option>`
+            );
+          }
+        }
+        if (balance) {
+          $("#Balance").text(balance);
+        }
+
+        if (open && high && low && close) {
+          $("#OHLC").text(`${open}/${high}/${low}/${close}`);
+        }
         // Handle custom radio button clicks
         $(".custom-radio-button").click(function () {
           $(".custom-radio-button").removeClass("active");
