@@ -10,6 +10,19 @@
     <!-- Load the Telegram Library -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      /* Add custom styles for radio buttons */
+      .custom-radio-button {
+        display: inline-block;
+        background-color: #ccc;
+        padding: 10px 20px;
+        cursor: pointer;
+      }
+      .custom-radio-button.active {
+        background-color: #007bff;
+        color: #fff;
+      }
+    </style>
   </head>
   <body ng-controller="CustomUIController">
     <div class="container px-5 my-5">
@@ -17,65 +30,339 @@
         <fieldset>
           <!-- Form Name -->
           <legend>Create order</legend>
+          <div class="col-md-8">
+            <div>Balance $:<span id="Balance"></span></div>
+            <!-- <div>OHLC:<span id="OHLC"></span></div> -->
+          </div>
 
-          <!-- Select Basic -->
+          <!-- Custom Radio Buttons for Market Type -->
           <div class="form-group">
-            <label class="col-md-4 control-label" for="selectbasic"
-              >Asset</label
-            >
+            <label class="col-md-4 control-label">Order Type</label>
+            <div class="col-md-8">
+              <div
+                class="custom-radio-button"
+                id="marketTypeMarket"
+                data-market-type="MARKET"
+              >
+                MARKET
+              </div>
+              <div
+                class="custom-radio-button"
+                id="marketTypeLimit"
+                data-market-type="LIMIT"
+              >
+                LIMIT
+              </div>
+              <div
+                class="custom-radio-button"
+                id="marketTypeLadder"
+                data-market-type="Ladder"
+              >
+                Ladder
+              </div>
+            </div>
+          </div>
+
+          <!-- Select Basic for MARKET -->
+          <div
+            class="form-group market-field limit-field ladder-field"
+            style="display: none"
+          >
+            <label class="col-md-4 control-label" for="selectbasic">
+              Asset
+            </label>
             <div class="col-md-4">
-              <select id="selectbasic" name="selectbasic" class="form-control">
-                <option value="1">BTC/USDT</option>
-                <option value="2">ETH/USDT</option>
+              <select
+                id="assetselect"
+                name="assetselect"
+                class="form-control"
+              ></select>
+            </div>
+          </div>
+
+          <div
+            class="form-group market-field limit-field ladder-field"
+            style="display: none"
+          >
+            <label class="col-md-4 control-label" for="selectlimit">
+              Long/Short
+            </label>
+            <div class="col-md-4">
+              <select
+                id="longshortselect"
+                name="longshortselect"
+                class="form-control"
+              >
+                <option value="BUY">BUY</option>
+                <option value="SELL">SELL</option>
               </select>
             </div>
           </div>
 
-          <!-- Select Basic -->
-          <div class="form-group">
-            <label class="col-md-4 control-label" for="longshort"
-              >Long/Short</label
-            >
+          <div
+            class="form-group market-field limit-field ladder-field"
+            style="display: none"
+          >
+            <label class="col-md-4 control-label" for="selectleverage">
+              Leverage
+            </label>
             <div class="col-md-4">
-              <select id="longshort" name="longshort" class="form-control">
-                <option value="1">BUY</option>
-                <option value="2">SELL</option>
+              <select
+                id="leverageselect"
+                name="leverageselect"
+                class="form-control"
+              >
+                <option value="1" selected>1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
               </select>
             </div>
           </div>
 
-          <!-- Text input-->
-          <div class="form-group">
-            <label class="col-md-4 control-label" for="amount">Amount</label>
+          <div class="form-group limit-field" style="display: none">
+            <label class="col-md-4 control-label" for="LimitPrice"
+              >At Price</label
+            >
             <div class="col-md-4">
               <input
-                id="amount"
-                name="amount"
-                type="text"
-                placeholder="Amount"
+                id="LimitPrice"
+                name="LimitPrice"
+                type="number"
+                placeholder="at Price"
                 class="form-control input-md"
                 required=""
               />
             </div>
           </div>
+
+          <div
+            class="form-group market-field limit-field ladder-field"
+            style="display: none"
+          >
+            <label class="col-md-4 control-label" for="Amount">Amount %</label>
+            <div class="col-md-4">
+              <select id="Amount" name="Amount" class="form-control">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="75">75</option>
+                <option value="80">80</option>
+                <option value="100">100</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group ladder-field" style="display: none">
+            <label class="col-md-4 control-label" for="StartPrice"
+              >Start Price</label
+            >
+            <div class="col-md-4">
+              <input
+                id="StartPrice"
+                name="StartPrice"
+                type="number"
+                placeholder="StartPrice"
+                class="form-control input-md"
+                required=""
+              />
+            </div>
+          </div>
+
+          <div class="form-group ladder-field" style="display: none">
+            <label class="col-md-4 control-label" for="EndPrice"
+              >End Price</label
+            >
+            <div class="col-md-4">
+              <input
+                id="EndPrice"
+                name="EndPrice"
+                type="number"
+                placeholder="EndPrice"
+                class="form-control input-md"
+                required=""
+              />
+            </div>
+          </div>
+          <div class="form-group ladder-field" style="display: none">
+            <label class="col-md-4 control-label" for="OrderNo">
+              Orders #
+            </label>
+            <div class="col-md-4">
+              <select id="OrderNo" name="OrderNo" class="form-control">
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- <button id="submit" name="submit" class="btn btn-primary">
+            submit
+          </button> -->
         </fieldset>
       </form>
     </div>
+    <script>
+      $(document).ready(function () {
+        // Wait for the document to be fully loaded
+        const url = new URL(window.location.href);
+        // Create a URLSearchParams object from the URL search parameters
+        const params = new URLSearchParams(url.search);
+
+        // Get individual parameter values
+        const balance = params.get("b");
+        const open = params.get("o");
+        const high = params.get("h");
+        const low = params.get("l");
+        const close = params.get("c");
+        const assets = params.get("assets")?.split(",");
+        const exchanges = params.get("exs")?.split(",");
+        console.log(balance, open, high, low, close, assets, exchanges);
+
+        const assetSelect = $("#assetselect");
+        if (assets) {
+          for (let i = 0; i < assets.length; i++) {
+            assetSelect.append(
+              `<option value="${assets[i]}">${assets[i]}</option>`
+            );
+          }
+        }
+        if (balance) {
+          $("#Balance").text(balance);
+        }
+
+        if (open && high && low && close) {
+          $("#OHLC").text(`${open}/${high}/${low}/${close}`);
+        }
+        // Handle custom radio button clicks
+        $(".custom-radio-button").click(function () {
+          $(".custom-radio-button").removeClass("active");
+          $(this).addClass("active");
+
+          // Get the selected market type
+          var selectedMarketType = $(this).data("market-type");
+
+          // Show/hide the corresponding form fields
+          $(".market-field").hide();
+          $(".limit-field").hide();
+          $(".ladder-field").hide();
+          $("." + selectedMarketType.toLowerCase() + "-field").show();
+        });
+
+        // Initialize with MARKET selected
+        $("#marketTypeMarket").trigger("click");
+        const mainButton = window.Telegram.WebApp.MainButton;
+        mainButton.text = "Submit Order";
+        mainButton.enable();
+        mainButton.show();
+        mainButton.onClick(function () {
+          data_to_send = processDataToSend();
+          console.log(data_to_send);
+          if (data_to_send) {
+            window.Telegram.WebApp.sendData(JSON.stringify(data_to_send));
+          }
+        });
+
+        function processDataToSend() {
+          var data_to_send = {};
+          var selectedOrderType = $(".custom-radio-button.active").data(
+            "market-type"
+          );
+          selectedOrderType = selectedOrderType.toLowerCase();
+          console.log(selectedOrderType);
+          if ($("#Amount").val() == "") {
+            alert("Please enter amount %");
+            return false;
+          }
+          if ($("#Amount").val() < 0 || $("#Amount").val() > 100) {
+            alert("Please enter amount % between 0 to 100");
+            return false;
+          }
+
+          if (selectedOrderType == "market") {
+            data_to_send = {
+              order_type: selectedOrderType,
+              asset: $("#assetselect").val(),
+              longshort: $("#longshortselect").val(),
+              amount: $("#Amount").val(),
+              leverage: $("#leverageselect").val(),
+            };
+          } else if (selectedOrderType == "limit") {
+            if ($("#LimitPrice").val() == "") {
+              alert("Please enter limit price");
+              return false;
+            }
+            data_to_send = {
+              order_type: selectedOrderType,
+              asset: $("#assetselect").val(),
+              longshort: $("#longshortselect").val(),
+              amount: $("#Amount").val(),
+              limit_price: $("#LimitPrice").val(),
+              leverage: $("#leverageselect").val(),
+            };
+          } else if (selectedOrderType == "ladder") {
+            if ($("#OrderNo").val() == "") {
+              alert("Please enter order no");
+              return false;
+            }
+            if ($("#StartPrice").val() == "") {
+              alert("Please enter start price");
+              return false;
+            }
+            if ($("#EndPrice").val() == "") {
+              alert("Please enter end price");
+              return false;
+            }
+
+            if ($("#OrderNo").val() < 0 || $("#OrderNo").val() > 10) {
+              alert("Please enter order no between 0 to 10");
+              return false;
+            }
+
+            data_to_send = {
+              order_type: selectedOrderType,
+              asset: $("#assetselect").val(),
+              longshort: $("#longshortselect").val(),
+              amount: $("#Amount").val(),
+              start_price: $("#StartPrice").val(),
+              end_price: $("#EndPrice").val(),
+              order_no: $("#OrderNo").val(),
+              leverage: $("#leverageselect").val(),
+            };
+          } else {
+            alert("Please select order type");
+          }
+          return data_to_send;
+        }
+
+        $("#submit").click(function (e) {
+          e.preventDefault();
+          data_to_send = processDataToSend();
+          console.log(data_to_send);
+          // This function will be executed when the Submit button is clicked
+          alert("Submit button clicked!"); // You can replace this with your desired action
+        });
+
+        $(".amount-group button").click(function () {
+          var buttonValue = parseInt($(this).val()); // Get the button value (e.g., 5, 10, 15, ...)
+          $("#Amount").val(buttonValue);
+        });
+      });
+    </script>
   </body>
-  <script>
-    $(document).ready(function () {
-      // Wait for the document to be fully loaded
-      $("#submit").click(function () {
-        // This function will be executed when the Submit button is clicked
-        alert("Submit button clicked!"); // You can replace this with your desired action
-      });
-      const mainButton = window.Telegram.WebApp.MainButton;
-      mainButton.text = "Save Preferences";
-      mainButton.enable();
-      mainButton.show();
-      mainButton.onClick(function () {
-        window.Telegram.WebApp.sendData(JSON.stringify({ lll: "hhh" }));
-      });
-    });
-  </script>
 </html>
