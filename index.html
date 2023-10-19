@@ -210,7 +210,26 @@
                 <option value="75">75</option>
                 <option value="80">80</option>
                 <option value="100">100</option>
+                <option value="value">value</option>
               </select>
+            </div>
+          </div>
+          <div
+            class="form-group market-field limit-field ladder-field amount_value"
+            style="display: none"
+          >
+            <label class="col-md-4 control-label" for="AmountVal"
+              >Amount value</label
+            >
+            <div class="col-md-4">
+              <input
+                id="AmountVal"
+                name="AmountVal"
+                type="number"
+                placeholder="$value"
+                class="form-control input-md"
+                required=""
+              />
             </div>
           </div>
 
@@ -403,6 +422,7 @@
           $(".limit-field").hide();
           $(".ladder-field").hide();
           $("." + selectedMarketType.toLowerCase() + "-field").show();
+          $(".amount_value").hide();
         });
 
         // Initialize with MARKET selected
@@ -434,6 +454,16 @@
             alert("Please enter amount % between 0 to 100");
             return false;
           }
+          if ($("#Amount").val() == "value") {
+            if ($("#AmountVal").val() == "") {
+              alert("Please enter amount value");
+              return false;
+            }
+            if ($("#AmountVal").val() < 0) {
+              alert("Please enter amount value greater than 0");
+              return false;
+            }
+          }
 
           if (selectedOrderType == "market") {
             data_to_send = {
@@ -441,6 +471,7 @@
               asset: $("#assetselect").val(),
               longshort: $("#longshortselect").val(),
               amount: $("#Amount").val(),
+              amount_value: $("#AmountVal").val(),
               leverage: $("#leverageselect").val(),
             };
           } else if (selectedOrderType == "limit") {
@@ -453,6 +484,7 @@
               asset: $("#assetselect").val(),
               longshort: $("#longshortselect").val(),
               amount: $("#Amount").val(),
+              amount_value: $("#AmountVal").val(),
               limit_price: $("#LimitPrice").val(),
               leverage: $("#leverageselect").val(),
             };
@@ -480,6 +512,7 @@
               asset: $("#assetselect").val(),
               longshort: $("#longshortselect").val(),
               amount: $("#Amount").val(),
+              amount_value: $("#AmountVal").val(),
               start_price: $("#StartPrice").val(),
               end_price: $("#EndPrice").val(),
               order_no: $("#OrderNo").val(),
@@ -582,6 +615,14 @@
             console.log("TP toggle disabled");
           }
         });
+        $("#Amount").change(function () {
+          if ($("#Amount").val() == "value") {
+            $(".amount_value").show();
+          } else {
+            $(".amount_value").hide();
+          }
+        });
+        $(".amount_value").hide();
       });
     </script>
   </body>
