@@ -310,11 +310,51 @@
               />
             </div>
           </div>
+
+          <!-- TP Toggle Switch -->
+          <div class="form-group">
+            <label class="col-md-2 control-label">TP</label>
+            <div class="col-md-2">
+              <label class="custom-switch">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="tpToggle"
+                />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+          <!-- TP Input Field (Hidden by default) -->
+          <div class="form-group tpField" style="display: none">
+            <label class="col-md-2 control-label" for="tpType">TP Type</label>
+            <div class="col-md-2">
+              <select id="tpType" name="tpType" class="form-control">
+                <option value="fixed">fixed</option>
+                <option value="entry_perc">entry_perc</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group tpField" style="display: none">
+            <label class="col-md-2 control-label" for="tpValue">TP</label>
+            <div class="col-md-2">
+              <input
+                id="tpValue"
+                name="tpValue"
+                type="number"
+                placeholder=""
+                class="form-control input-md"
+                required=""
+              />
+            </div>
+          </div>
+
           <div class="form-group" style="margin-top: 50px"></div>
 
-          <!-- <button id="submit" name="submit" class="btn btn-primary">
+          <button id="submit" name="submit" class="btn btn-primary">
             submit
-          </button> -->
+          </button>
         </fieldset>
       </form>
     </div>
@@ -477,6 +517,30 @@
                 $("#stopLossValue").val();
             }
           }
+          if ($("#tpToggle").is(":checked")) {
+            data_to_send["tp_data"] = {};
+            if ($("#tpType").val() == "entry_perc") {
+              if ($("#tpValue").val() < 0 || $("#tpValue").val() > 100) {
+                alert("Please enter tp value between 0 to 100");
+                return false;
+              }
+            }
+
+            if ($("#tpValue").val() == "") {
+              alert("Please enter tp value");
+              return false;
+            }
+
+            if ($("#tpValue").val() < 0) {
+              alert("Please enter tp value greater than 0");
+              return false;
+            }
+            if ($("#tpType").val() == "entry_perc") {
+              data_to_send["tp_data"]["entry_perc"] = $("#tpValue").val();
+            } else {
+              data_to_send["tp_data"]["fixed_price"] = $("#tpValue").val();
+            }
+          }
 
           return data_to_send;
         }
@@ -504,6 +568,18 @@
           } else {
             $(".stopLossField").hide();
             console.log("Stop Loss toggle disabled");
+          }
+        });
+        // Handle TP Toggle
+        $("#tpToggle").change(function () {
+          console.log($("#tpToggle").is(":checked"));
+          $("#tpValue").val(null);
+          if (this.checked) {
+            $(".tpField").show();
+            console.log("TP toggle enabled");
+          } else {
+            $(".tpField").hide();
+            console.log("TP toggle disabled");
           }
         });
       });
