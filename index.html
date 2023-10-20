@@ -248,6 +248,18 @@
           </div>
 
           <div class="form-group ladder-field" style="display: none">
+            <label class="col-md-4 control-label" for="LadderType"
+              >Ladder Type</label
+            >
+            <div class="col-md-4">
+              <select id="LadderType" name="LadderType" class="form-control">
+                <option value="value">value</option>
+                <option value="current_price_perc">current_price_perc</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group ladder-field" style="display: none">
             <label class="col-md-4 control-label" for="StartPrice"
               >Start Price</label
             >
@@ -497,10 +509,14 @@
           $(".ladder-field").hide();
           $(".tp-field").hide();
           $(".sl-field").hide();
+          $(".tp-ladder").hide();
+          $(".tp-normal").hide();
           $("." + selectedMarketType.toLowerCase() + "-field").show();
           $(".amount_value").hide();
-          $(".tp-ladder").hide();
-          $(".tp-normal").show();
+          if (selectedMarketType.toLowerCase() == "tp") {
+            $(".tp-ladder").hide();
+            $(".tp-normal").show();
+          }
         });
 
         // Initialize with MARKET selected
@@ -588,6 +604,16 @@
               alert("Please enter order no between 0 to 10");
               return false;
             }
+            if ($("#LadderType").val() == "current_price_perc") {
+              if ($("#StartPrice").val() < 0 || $("#StartPrice").val() > 100) {
+                alert("Please enter start price between 0 to 100");
+                return false;
+              }
+              if ($("#EndPrice").val() < 0 || $("#EndPrice").val() > 100) {
+                alert("Please enter end price between 0 to 100");
+                return false;
+              }
+            }
 
             data_to_send = {
               order_type: selectedOrderType,
@@ -601,6 +627,7 @@
               leverage: $("#leverageselect").val(),
               auto_tp_rebalance: $("#tpToggle").is(":checked"),
               auto_sl_rebalance: $("#stopLossToggle").is(":checked"),
+              ladder_type: $("#LadderType").val(),
             };
           } else if (selectedOrderType == "tp") {
             data_to_send = {
@@ -782,8 +809,6 @@
         });
 
         $(".amount_value").hide();
-        $(".tp-ladder").hide();
-        $(".tp-normal").show();
       });
     </script>
   </body>
