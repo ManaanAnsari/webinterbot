@@ -113,12 +113,26 @@
               >
                 Ladder
               </div>
+              <div
+                class="custom-radio-button"
+                id="marketTypeTP"
+                data-market-type="TP"
+              >
+                TP
+              </div>
+              <div
+                class="custom-radio-button"
+                id="marketTypeSL"
+                data-market-type="SL"
+              >
+                SL
+              </div>
             </div>
           </div>
 
           <!-- Select Basic for MARKET -->
           <div
-            class="form-group market-field limit-field ladder-field"
+            class="form-group market-field limit-field ladder-field tp-field sl-field"
             style="display: none"
           >
             <label class="col-md-4 control-label" for="selectbasic">
@@ -134,7 +148,7 @@
           </div>
 
           <div
-            class="form-group market-field limit-field ladder-field"
+            class="form-group market-field limit-field ladder-field tp-field sl-field"
             style="display: none"
           >
             <label class="col-md-4 control-label" for="selectlimit">
@@ -283,26 +297,11 @@
             </div>
           </div>
 
-          <!-- Stop Loss Toggle Switch -->
-          <div class="form-group">
-            <label class="col-md-2 control-label">Stop Loss</label>
-            <div class="col-md-2">
-              <label class="custom-switch">
-                <input
-                  type="checkbox"
-                  class="custom-control-input"
-                  id="stopLossToggle"
-                />
-                <span class="slider"></span>
-              </label>
-            </div>
-          </div>
-          <!-- Stop Loss Input Field (Hidden by default) -->
-          <div class="form-group stopLossField" style="display: none">
-            <label class="col-md-2 control-label" for="stopLossType"
-              >Stop Loss Type</label
-            >
-            <div class="col-md-2">
+          <div class="form-group sl-field" style="display: none">
+            <label class="col-md-4 control-label" for="stopLossType">
+              SL type
+            </label>
+            <div class="col-md-4">
               <select
                 id="stopLossType"
                 name="stopLossType"
@@ -314,25 +313,63 @@
             </div>
           </div>
 
-          <div class="form-group stopLossField" style="display: none">
-            <label class="col-md-2 control-label" for="stopLossValue"
+          <div class="form-group sl-field" style="display: none">
+            <label class="col-md-4 control-label" for="stopLossValue"
               >Stop Loss</label
             >
-            <div class="col-md-2">
+            <div class="col-md-4">
               <input
                 id="stopLossValue"
                 name="stopLossValue"
                 type="number"
-                placeholder="Stop Loss Value"
+                placeholder="stopLossValue"
                 class="form-control input-md"
                 required=""
               />
             </div>
           </div>
 
+          <div class="form-group tp-field" style="display: none">
+            <label class="col-md-4 control-label" for="tpType"> TP type </label>
+            <div class="col-md-4">
+              <select id="tpType" name="tpType" class="form-control">
+                <option value="fixed">fixed</option>
+                <option value="entry_perc">entry_perc</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group tp-field" style="display: none">
+            <label class="col-md-4 control-label" for="tpValue">TP</label>
+            <div class="col-md-4">
+              <input
+                id="tpValue"
+                name="tpValue"
+                type="number"
+                placeholder="tpValue"
+                class="form-control input-md"
+                required=""
+              />
+            </div>
+          </div>
+
+          <!-- Stop Loss Toggle Switch -->
+          <div class="form-group market-field limit-field ladder-field">
+            <label class="col-md-2 control-label">auto sl rebalance</label>
+            <div class="col-md-2">
+              <label class="custom-switch">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="stopLossToggle"
+                />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
           <!-- TP Toggle Switch -->
-          <div class="form-group">
-            <label class="col-md-2 control-label">TP</label>
+          <div class="form-group market-field limit-field ladder-field">
+            <label class="col-md-2 control-label">auto tp rebalance</label>
             <div class="col-md-2">
               <label class="custom-switch">
                 <input
@@ -344,36 +381,12 @@
               </label>
             </div>
           </div>
-          <!-- TP Input Field (Hidden by default) -->
-          <div class="form-group tpField" style="display: none">
-            <label class="col-md-2 control-label" for="tpType">TP Type</label>
-            <div class="col-md-2">
-              <select id="tpType" name="tpType" class="form-control">
-                <option value="fixed">fixed</option>
-                <option value="entry_perc">entry_perc</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group tpField" style="display: none">
-            <label class="col-md-2 control-label" for="tpValue">TP</label>
-            <div class="col-md-2">
-              <input
-                id="tpValue"
-                name="tpValue"
-                type="number"
-                placeholder=""
-                class="form-control input-md"
-                required=""
-              />
-            </div>
-          </div>
 
           <div class="form-group" style="margin-top: 50px"></div>
 
-          <!-- <button id="submit" name="submit" class="btn btn-primary">
+          <button id="submit" name="submit" class="btn btn-primary">
             submit
-          </button> -->
+          </button>
         </fieldset>
       </form>
     </div>
@@ -421,6 +434,8 @@
           $(".market-field").hide();
           $(".limit-field").hide();
           $(".ladder-field").hide();
+          $(".tp-field").hide();
+          $(".sl-field").hide();
           $("." + selectedMarketType.toLowerCase() + "-field").show();
           $(".amount_value").hide();
         });
@@ -473,6 +488,8 @@
               amount: $("#Amount").val(),
               amount_value: $("#AmountVal").val(),
               leverage: $("#leverageselect").val(),
+              auto_tp_rebalance: $("#tpToggle").is(":checked"),
+              auto_sl_rebalance: $("#stopLossToggle").is(":checked"),
             };
           } else if (selectedOrderType == "limit") {
             if ($("#LimitPrice").val() == "") {
@@ -487,6 +504,8 @@
               amount_value: $("#AmountVal").val(),
               limit_price: $("#LimitPrice").val(),
               leverage: $("#leverageselect").val(),
+              auto_tp_rebalance: $("#tpToggle").is(":checked"),
+              auto_sl_rebalance: $("#stopLossToggle").is(":checked"),
             };
           } else if (selectedOrderType == "ladder") {
             if ($("#OrderNo").val() == "") {
@@ -517,11 +536,43 @@
               end_price: $("#EndPrice").val(),
               order_no: $("#OrderNo").val(),
               leverage: $("#leverageselect").val(),
+              auto_tp_rebalance: $("#tpToggle").is(":checked"),
+              auto_sl_rebalance: $("#stopLossToggle").is(":checked"),
             };
-          } else {
-            alert("Please select order type");
-          }
-          if ($("#stopLossToggle").is(":checked")) {
+          } else if (selectedOrderType == "tp") {
+            data_to_send = {
+              order_type: selectedOrderType,
+              asset: $("#assetselect").val(),
+              longshort: $("#longshortselect").val(),
+            };
+            data_to_send["tp_data"] = {};
+            if ($("#tpType").val() == "entry_perc") {
+              if ($("#tpValue").val() < 0 || $("#tpValue").val() > 100) {
+                alert("Please enter tp value between 0 to 100");
+                return false;
+              }
+            }
+
+            if ($("#tpValue").val() == "") {
+              alert("Please enter tp value");
+              return false;
+            }
+
+            if ($("#tpValue").val() < 0) {
+              alert("Please enter tp value greater than 0");
+              return false;
+            }
+            if ($("#tpType").val() == "entry_perc") {
+              data_to_send["tp_data"]["entry_perc"] = $("#tpValue").val();
+            } else {
+              data_to_send["tp_data"]["fixed_price"] = $("#tpValue").val();
+            }
+          } else if (selectedOrderType == "sl") {
+            data_to_send = {
+              order_type: selectedOrderType,
+              asset: $("#assetselect").val(),
+              longshort: $("#longshortselect").val(),
+            };
             data_to_send["stoploss_data"] = {};
             if ($("#stopLossType").val() == "entry_perc") {
               if (
@@ -549,30 +600,8 @@
               data_to_send["stoploss_data"]["fixed_price"] =
                 $("#stopLossValue").val();
             }
-          }
-          if ($("#tpToggle").is(":checked")) {
-            data_to_send["tp_data"] = {};
-            if ($("#tpType").val() == "entry_perc") {
-              if ($("#tpValue").val() < 0 || $("#tpValue").val() > 100) {
-                alert("Please enter tp value between 0 to 100");
-                return false;
-              }
-            }
-
-            if ($("#tpValue").val() == "") {
-              alert("Please enter tp value");
-              return false;
-            }
-
-            if ($("#tpValue").val() < 0) {
-              alert("Please enter tp value greater than 0");
-              return false;
-            }
-            if ($("#tpType").val() == "entry_perc") {
-              data_to_send["tp_data"]["entry_perc"] = $("#tpValue").val();
-            } else {
-              data_to_send["tp_data"]["fixed_price"] = $("#tpValue").val();
-            }
+          } else {
+            alert("Please select order type");
           }
 
           return data_to_send;
@@ -594,6 +623,7 @@
         // Handle Stop Loss Toggle
         $("#stopLossToggle").change(function () {
           console.log($("#stopLossToggle").is(":checked"));
+          /*
           $("#stopLossValue").val(null);
           if (this.checked) {
             $(".stopLossField").show();
@@ -602,10 +632,12 @@
             $(".stopLossField").hide();
             console.log("Stop Loss toggle disabled");
           }
+          */
         });
         // Handle TP Toggle
         $("#tpToggle").change(function () {
           console.log($("#tpToggle").is(":checked"));
+          /*
           $("#tpValue").val(null);
           if (this.checked) {
             $(".tpField").show();
@@ -614,6 +646,7 @@
             $(".tpField").hide();
             console.log("TP toggle disabled");
           }
+          */
         });
         $("#Amount").change(function () {
           if ($("#Amount").val() == "value") {
