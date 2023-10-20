@@ -330,6 +330,18 @@
           </div>
 
           <div class="form-group tp-field" style="display: none">
+            <label class="col-md-4 control-label" for="tpOrderType">
+              TP Order type
+            </label>
+            <div class="col-md-4">
+              <select id="tpOrderType" name="tpOrderType" class="form-control">
+                <option value="normal">normal</option>
+                <option value="ladder">ladder</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group tp-field" style="display: none">
             <label class="col-md-4 control-label" for="tpType"> TP type </label>
             <div class="col-md-4">
               <select id="tpType" name="tpType" class="form-control">
@@ -339,7 +351,7 @@
             </div>
           </div>
 
-          <div class="form-group tp-field" style="display: none">
+          <div class="form-group tp-field tp-normal" style="display: none">
             <label class="col-md-4 control-label" for="tpValue">TP</label>
             <div class="col-md-4">
               <input
@@ -350,6 +362,55 @@
                 class="form-control input-md"
                 required=""
               />
+            </div>
+          </div>
+
+          <div class="form-group tp-field tp-ladder" style="display: none">
+            <label class="col-md-4 control-label" for="tpValueStart"
+              >start</label
+            >
+            <div class="col-md-4">
+              <input
+                id="tpValueStart"
+                name="tpValueStart"
+                type="number"
+                placeholder="tpValueStart"
+                class="form-control input-md"
+                required=""
+              />
+            </div>
+          </div>
+
+          <div class="form-group tp-field tp-ladder" style="display: none">
+            <label class="col-md-4 control-label" for="tpValueEnd">end</label>
+            <div class="col-md-4">
+              <input
+                id="tpValueEnd"
+                name="tpValueEnd"
+                type="number"
+                placeholder="tpValueEnd"
+                class="form-control input-md"
+                required=""
+              />
+            </div>
+          </div>
+
+          <div class="form-group tp-field tp-ladder" style="display: none">
+            <label class="col-md-4 control-label" for="tpOrderNum"
+              >Order #</label
+            >
+            <div class="col-md-4">
+              <select id="tpOrderNum" name="tpOrderNum" class="form-control">
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
             </div>
           </div>
 
@@ -438,6 +499,8 @@
           $(".sl-field").hide();
           $("." + selectedMarketType.toLowerCase() + "-field").show();
           $(".amount_value").hide();
+          $(".tp-ladder").hide();
+          $(".tp-normal").show();
         });
 
         // Initialize with MARKET selected
@@ -546,26 +609,79 @@
               longshort: $("#longshortselect").val(),
             };
             data_to_send["tp_data"] = {};
-            if ($("#tpType").val() == "entry_perc") {
-              if ($("#tpValue").val() < 0 || $("#tpValue").val() > 100) {
-                alert("Please enter tp value between 0 to 100");
+            if ($("#tpOrderType").val() == "normal") {
+              if ($("#tpType").val() == "entry_perc") {
+                if ($("#tpValue").val() < 0 || $("#tpValue").val() > 100) {
+                  alert("Please enter tp value between 0 to 100");
+                  return false;
+                }
+              }
+
+              if ($("#tpValue").val() == "") {
+                alert("Please enter tp value");
                 return false;
               }
-            }
 
-            if ($("#tpValue").val() == "") {
-              alert("Please enter tp value");
-              return false;
-            }
+              if ($("#tpValue").val() < 0) {
+                alert("Please enter tp value greater than 0");
+                return false;
+              }
+              if ($("#tpType").val() == "entry_perc") {
+                data_to_send["tp_data"]["type"] = "normal";
+                data_to_send["tp_data"]["entry_perc"] = $("#tpValue").val();
+              } else {
+                data_to_send["tp_data"]["type"] = "normal";
+                data_to_send["tp_data"]["fixed_price"] = $("#tpValue").val();
+              }
+            } else if ($("#tpOrderType").val() == "ladder") {
+              if ($("#tpType").val() == "entry_perc") {
+                if (
+                  $("#tpValueStart").val() < 0 ||
+                  $("#tpValueStart").val() > 100
+                ) {
+                  alert("Please enter tp value between 0 to 100");
+                  return false;
+                }
+                if (
+                  $("#tpValueEnd").val() < 0 ||
+                  $("#tpValueEnd").val() > 100
+                ) {
+                  alert("Please enter tp value between 0 to 100");
+                  return false;
+                }
+              }
 
-            if ($("#tpValue").val() < 0) {
-              alert("Please enter tp value greater than 0");
-              return false;
-            }
-            if ($("#tpType").val() == "entry_perc") {
-              data_to_send["tp_data"]["entry_perc"] = $("#tpValue").val();
-            } else {
-              data_to_send["tp_data"]["fixed_price"] = $("#tpValue").val();
+              if ($("#tpValueStart").val() == "") {
+                alert("Please enter tp value");
+                return false;
+              }
+              if ($("#tpValueEnd").val() == "") {
+                alert("Please enter tp value");
+                return false;
+              }
+
+              if ($("#tpValueStart").val() < 0) {
+                alert("Please enter tp value greater than 0");
+                return false;
+              }
+              if ($("#tpValueEnd").val() < 0) {
+                alert("Please enter tp value greater than 0");
+                return false;
+              }
+
+              if ($("#tpType").val() == "entry_perc") {
+                data_to_send["tp_data"]["type"] = "ladder";
+                data_to_send["tp_data"]["start_perc"] =
+                  $("#tpValueStart").val();
+                data_to_send["tp_data"]["end_perc"] = $("#tpValueEnd").val();
+                data_to_send["tp_data"]["order_num"] = $("#tpOrderNum").val();
+              } else {
+                data_to_send["tp_data"]["type"] = "ladder";
+                data_to_send["tp_data"]["start_price"] =
+                  $("#tpValueStart").val();
+                data_to_send["tp_data"]["end_price"] = $("#tpValueEnd").val();
+                data_to_send["tp_data"]["order_num"] = $("#tpOrderNum").val();
+              }
             }
           } else if (selectedOrderType == "sl") {
             data_to_send = {
@@ -655,7 +771,19 @@
             $(".amount_value").hide();
           }
         });
+        $("#tpOrderType").change(function () {
+          if ($("#tpOrderType").val() == "ladder") {
+            $(".tp-ladder").show();
+            $(".tp-normal").hide();
+          } else {
+            $(".tp-ladder").hide();
+            $(".tp-normal").show();
+          }
+        });
+
         $(".amount_value").hide();
+        $(".tp-ladder").hide();
+        $(".tp-normal").show();
       });
     </script>
   </body>
