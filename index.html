@@ -535,7 +535,7 @@
 
         function processDataToSend() {
           var data_to_send = {};
-          data_to_send["web_data_type"] = "create_order";
+
           var selectedOrderType = $(".custom-radio-button.active").data(
             "market-type"
           );
@@ -748,6 +748,7 @@
             alert("Please select order type");
           }
 
+          data_to_send["web_data_type"] = "create_order";
           return data_to_send;
         }
 
