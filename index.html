@@ -193,6 +193,18 @@
           </div>
 
           <div class="form-group limit-field" style="display: none">
+            <label class="col-md-4 control-label" for="LimitType"
+              >Limit Type</label
+            >
+            <div class="col-md-4">
+              <select id="LimitType" name="LimitType" class="form-control">
+                <option value="value">value</option>
+                <option value="current_price_perc">current_price_perc</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group limit-field" style="display: none">
             <label class="col-md-4 control-label" for="LimitPrice"
               >At Price</label
             >
@@ -457,9 +469,9 @@
 
           <div class="form-group" style="margin-top: 50px"></div>
 
-          <!-- <button id="submit" name="submit" class="btn btn-primary">
+          <button id="submit" name="submit" class="btn btn-primary">
             submit
-          </button> -->
+          </button>
         </fieldset>
       </form>
     </div>
@@ -576,6 +588,13 @@
               alert("Please enter limit price");
               return false;
             }
+            if ($("#LimitType").val() == "current_price_perc") {
+              if ($("#LimitPrice").val() < 0 || $("#LimitPrice").val() > 100) {
+                alert("Please enter LimitPrice between 0 to 100");
+                return false;
+              }
+            }
+
             data_to_send = {
               order_type: selectedOrderType,
               asset: $("#assetselect").val(),
@@ -586,6 +605,7 @@
               leverage: $("#leverageselect").val(),
               auto_tp_rebalance: $("#tpToggle").is(":checked"),
               auto_sl_rebalance: $("#stopLossToggle").is(":checked"),
+              limit_type: $("#LimitType").val(),
             };
           } else if (selectedOrderType == "ladder") {
             if ($("#OrderNo").val() == "") {
