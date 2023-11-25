@@ -352,6 +352,23 @@
               />
             </div>
           </div>
+          
+          <div class="form-group sl-field" style="display: none">
+            <label class="col-md-4 control-label" for="stopLossAmount"
+              >Stop Loss Amount</label
+            >
+            <div class="col-md-4">
+              <input
+                id="stopLossAmount"
+                name="stopLossAmount"
+                type="number"
+                placeholder="stopLossAmount"
+                class="form-control input-md"
+                required=""
+              />
+            </div>
+          </div>
+          
 
           <div class="form-group tp-field" style="display: none">
             <label class="col-md-4 control-label" for="tpOrderType">
@@ -383,6 +400,19 @@
                 name="tpValue"
                 type="number"
                 placeholder="tpValue"
+                class="form-control input-md"
+                required=""
+              />
+            </div>
+          </div>
+          <div class="form-group tp-field tp-normal" style="display: none">
+            <label class="col-md-4 control-label" for="tpAmount">TP</label>
+            <div class="col-md-4">
+              <input
+                id="tpAmount"
+                name="tpAmount"
+                type="number"
+                placeholder="tpAmount"
                 class="form-control input-md"
                 required=""
               />
@@ -657,6 +687,7 @@
               longshort: $("#longshortselect").val(),
             };
             data_to_send["tp_data"] = {};
+            data_to_send["tp_data"]["tpAmount"] = $("#tpAmount").val();
             if ($("#tpOrderType").val() == "normal") {
               if ($("#tpType").val() == "entry_perc") {
                 if ($("#tpValue").val() < 0 || $("#tpValue").val() > 100) {
@@ -738,6 +769,7 @@
               longshort: $("#longshortselect").val(),
             };
             data_to_send["stoploss_data"] = {};
+            data_to_send["stoploss_data"]["stopLossAmount"] = $("#stopLossAmount").val();
             if ($("#stopLossType").val() == "entry_perc") {
               if (
                 $("#stopLossValue").val() < 0 ||
