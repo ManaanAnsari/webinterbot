@@ -687,7 +687,7 @@
               longshort: $("#longshortselect").val(),
             };
             data_to_send["tp_data"] = {};
-            data_to_send["tp_data"]["tpAmount"] = $("#tpAmount").val();
+            data_to_send["tp_data"]["tp_amount"] = $("#tpAmount").val();
             if ($("#tpOrderType").val() == "normal") {
               if ($("#tpType").val() == "entry_perc") {
                 if ($("#tpValue").val() < 0 || $("#tpValue").val() > 100) {
@@ -769,7 +769,7 @@
               longshort: $("#longshortselect").val(),
             };
             data_to_send["stoploss_data"] = {};
-            data_to_send["stoploss_data"]["stopLossAmount"] = $("#stopLossAmount").val();
+            data_to_send["stoploss_data"]["sl_amount"] = $("#stopLossAmount").val();
             if ($("#stopLossType").val() == "entry_perc") {
               if (
                 $("#stopLossValue").val() < 0 ||
